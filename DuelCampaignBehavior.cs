@@ -65,66 +65,68 @@ namespace MolochsDuels
 
         private void AddEnemyChallengeDialogToInputToken(string inputToken) => Campaign.Current.ConversationManager
             .AddDialogFlow(DialogFlow.CreateDialogFlow(inputToken, 100)
-            .PlayerLine("Let us settle this according to the old ways. I challenge you to a duel!", null)
+            .PlayerLine(new TextObject("{=molochsduels_player_challanges_enemy_entry}Let us settle this according to the old ways. I challenge you to a duel!"), null)
             .Condition(can_challenge_enemy_duel)
-            .NpcLine("What are your terms?", null, null)
+            .NpcLine(new TextObject("{=molochsduels_enemy_terms}What are your terms?"), null, null)
             .BeginPlayerOptions()
-            .PlayerOption("I expect you to surrender, should you lose!", null)
+            .PlayerOption(new TextObject("{=molochsduels_player_expects_surrender}I expect you to surrender, should you lose!"), null)
             .Condition(player_can_demand_surrender)
             .Consequence(calculate_npc_response_to_surrender_demand)
             .GotoDialogState("duel_response_flow")
-            .PlayerOption("We shall meet one on one before our armies clash in battle!", null)
+            .PlayerOption(new TextObject("{=molochsduels_duel_before_battle}We shall meet one on one before our armies clash in battle!"), null)
             .Condition(player_is_attacker)
             .Consequence(calculate_npc_response_to_duel)
-            .GotoDialogState("duel_response_flow").PlayerOption("I expect you to allow us safe passage!", null)
+            .GotoDialogState("duel_response_flow")
+            .PlayerOption(new TextObject("{=molochsduels_player_expects_safe_passage}I expect you to allow us safe passage!"), null)
             .Condition(player_is_defender)
             .Consequence(calculate_npc_response_to_duel)
-            .GotoDialogState("duel_response_flow").EndPlayerOptions(), null);
+            .GotoDialogState("duel_response_flow")
+            .EndPlayerOptions(), null);
 
         private void AddDuelResponseDialogFlow() => Campaign.Current.ConversationManager
             .AddDialogFlow(DialogFlow.CreateDialogFlow("duel_response_flow", 100)
             .BeginNpcOptions()
-            .NpcOption("I accept to meet you in honorable combat.", duel_accepted, null, null)
+            .NpcOption(new TextObject("{=molochsduels_enemy_accepts_duel}I accept to meet you in honorable combat."), duel_accepted, null, null)
             .BeginPlayerOptions()
-            .PlayerOption("We shall meet on the field, then.", null)
+            .PlayerOption(new TextObject("{=molochsduels_enemy_accepts_duel_player_response}We shall meet on the field, then."), null)
             .Consequence(start_enemy_duel)
             .CloseDialog()
             .EndPlayerOptions()
-            .NpcOption("I think not. Our armies will clash in battle!", duel_rejected, null, null)
+            .NpcOption(new TextObject("{=molochsduels_enemy_declines_duel}I think not. Our armies will clash in battle!"), duel_rejected, null, null)
             .Consequence(ResetDuelResult)
             .EndNpcOptions()
             .CloseDialog(), null);
 
         private void AddFriendlyChallengeDialogFlow() => Campaign.Current.ConversationManager
             .AddDialogFlow(DialogFlow.CreateDialogFlow("lord_talk_speak_diplomacy_2", 100)
-            .PlayerLine("I challenge you to a duel!", null)
+            .PlayerLine(new TextObject("{=molochsduels_player_challanges_friendly_entry}I challenge you to a duel!"), null)
             .Condition(can_challenge_friendly_duel)
-            .NpcLine("Very well, we shall test our strengths.", null, null)
+            .NpcLine(new TextObject("{=molochsduels_friendly_accepts_duel}Very well, we shall test our strengths."), null, null)
             .BeginPlayerOptions()
-            .PlayerOption("We shall meet on the field, then.", null)
+            .PlayerOption(new TextObject("{=molochsduels_friendly_accepts_duel_player_response}We shall meet on the field, then."), null)
             .Consequence(start_friendly_duel)
             .CloseDialog()
-            .PlayerOption("I propose a wager.", null)
+            .PlayerOption(new TextObject("{=molochsduels_player_propose_wager}I propose a wager."), null)
             .Condition(characters_have_100_denars)
-            .NpcLine("How much do you care to bet on your skills?", null, null)
+            .NpcLine(new TextObject("{=molochsduels_player_propose_wager_friendly_response}How much do you care to bet on your skills?"), null, null)
             .BeginPlayerOptions()
-            .PlayerOption("100 denars", null)
+            .PlayerOption($"100 {new TextObject("{=molochsduels_money}denars")}", null)
             .Condition(characters_have_100_denars)
             .Consequence(set_100_duel_wager)
             .GotoDialogState("friendly_duel_response_flow")
-            .PlayerOption("250 denars", null)
+            .PlayerOption($"250 {new TextObject("{= molochsduels_money}denars")}", null)
             .Condition(characters_have_250_denars)
             .Consequence(set_250_duel_wager)
             .GotoDialogState("friendly_duel_response_flow")
-            .PlayerOption("500 denars", null)
+            .PlayerOption($"500 {new TextObject("{= molochsduels_money}denars")}", null)
             .Condition(characters_have_500_denars)
             .Consequence(set_500_duel_wager)
             .GotoDialogState("friendly_duel_response_flow")
-            .PlayerOption("1000 denars", null)
+            .PlayerOption($"1000 {new TextObject("{=molochsduels_money}denars")}", null)
             .Condition(characters_have_1000_denars)
             .Consequence(set_1000_duel_wager)
             .GotoDialogState("friendly_duel_response_flow")
-            .PlayerOption("1500 denars", null)
+            .PlayerOption($"1500 {new TextObject("{=molochsduels_money}denars")}", null)
             .Condition(characters_have_1500_denars)
             .Consequence(set_1500_duel_wager)
             .GotoDialogState("friendly_duel_response_flow")
@@ -133,28 +135,28 @@ namespace MolochsDuels
 
         private void AddFriendlyDuelResponseFlow() => Campaign.Current.ConversationManager
             .AddDialogFlow(DialogFlow.CreateDialogFlow("friendly_duel_response_flow", 100)
-            .NpcLine("I accept.", null, null)
+            .NpcLine(new TextObject("{=molochsduels_friendly_accepts_wager}I accept."), null, null)
             .Consequence(start_friendly_duel)
             .CloseDialog(), null);
 
         private void AddCompanionDuelDialogFlow() => Campaign.Current.ConversationManager.AddDialogFlow(DialogFlow.CreateDialogFlow("hero_main_options", 100)
-            .PlayerLine("Let's test our skills one on one.", null)
+            .PlayerLine(new TextObject("{=molochsduels_player_challanges_companion_entry}Let's test our skills one on one."), null)
             .Condition(can_challenge_companion_duel)
-            .NpcLine("Very well.", null, null)
+            .NpcLine(new TextObject("{=molochsduels_companion_accepts_duel}Very well."), null, null)
             .Consequence(start_companion_duel)
             .CloseDialog(), null);
 
         private void AddMenus(CampaignGameStarter campaignGameStarter)
         {
             campaignGameStarter.AddGameMenu(MDMenu, "{=!}{DUEL_MENU_TEXT}", initiate_menu, 0, 0, null);
-            campaignGameStarter.AddGameMenuOption(MDMenu, MDMenu + "_start_duel", "Begin the duel", start_duel_menu_option_condition, start_duel_mission_consequence, false, -1, false);
-            campaignGameStarter.AddGameMenuOption(MDMenu, MDMenu + "_duel_ended_capture_enemy", "Capture the enemy", capture_enemy_option_condition, capture_enemy_consequence, false, -1, false);
-            campaignGameStarter.AddGameMenuOption(MDMenu, MDMenu + "_duel_ended_let_party_go", "Leave", let_enemy_go_option_condition, let_enemy_go_consequence, false, -1, false);
-            campaignGameStarter.AddGameMenuOption(MDMenu, MDMenu + "_duel_ended_player_let_go", "Leave", enemy_lets_player_go_option_condition, enemy_lets_player_go_consequence, false, -1, false);
-            campaignGameStarter.AddGameMenuOption(MDMenu, MDMenu + "_duel_ended_player_surrender", "Surrender", player_surrenders_option_condition, player_surrenders_consequence, false, -1, false);
+            campaignGameStarter.AddGameMenuOption(MDMenu, MDMenu + "_start_duel", new TextObject("{=molochsduels_menu_begin_duel}Begin the duel").ToString(), start_duel_menu_option_condition, start_duel_mission_consequence, false, -1, false);
+            campaignGameStarter.AddGameMenuOption(MDMenu, MDMenu + "_duel_ended_capture_enemy", new TextObject("{=molochsduels_menu_capture_enemy}Capture the enemy").ToString(), capture_enemy_option_condition, capture_enemy_consequence, false, -1, false);
+            campaignGameStarter.AddGameMenuOption(MDMenu, MDMenu + "_duel_ended_let_party_go", new TextObject("{=molochsduels_menu_player_win_let_enemy_go}Leave").ToString(), let_enemy_go_option_condition, let_enemy_go_consequence, false, -1, false);
+            campaignGameStarter.AddGameMenuOption(MDMenu, MDMenu + "_duel_ended_player_let_go", new TextObject("{=molochsduels_menu_player_lost_let_player_go}Leave").ToString(), enemy_lets_player_go_option_condition, enemy_lets_player_go_consequence, false, -1, false);
+            campaignGameStarter.AddGameMenuOption(MDMenu, MDMenu + "_duel_ended_player_surrender", new TextObject("{=molochsduels_menu_player_surrender}Surrender").ToString(), player_surrenders_option_condition, player_surrenders_consequence, false, -1, false);
             campaignGameStarter.AddGameMenuOption(MDMenu, MDMenu + "_set_horseback", "{=!}{DUEL_HORSEBACK_ON_OFF}", horseback_option_condition, horseback_on_off_consequence, false, -1, false);
-            MBTextManager.SetTextVariable("DUEL_HORSEBACK_ON_OFF", "Duel on horseback: OFF", false);
-            campaignGameStarter.AddGameMenuOption(MDMenu, MDMenu + "_exit_to_encounter", "Go to battle", leave_duel_menu_to_encounter_option_condition, leave_duel_menu_to_encounter_consequence, false, -1, false);
+            MBTextManager.SetTextVariable("DUEL_HORSEBACK_ON_OFF", new TextObject("{=molochsduels_menu_duel_horseback_off}Duel on horseback: OFF"), false);
+            campaignGameStarter.AddGameMenuOption(MDMenu, MDMenu + "_exit_to_encounter", new TextObject("{=molochsduels_menu_go_to_encouter}Go to battle").ToString(), leave_duel_menu_to_encounter_option_condition, leave_duel_menu_to_encounter_consequence, false, -1, false);
         }
 
         public void setDuelMissionResult(bool playerWon)
@@ -170,7 +172,7 @@ namespace MolochsDuels
             switch (_duelFightResult)
             {
                 case DuelFightResultEnum.None:
-                    MBTextManager.SetTextVariable("DUEL_MENU_TEXT", "You make your preparations to meet your opponent in honorable combat.", false);
+                    MBTextManager.SetTextVariable("DUEL_MENU_TEXT", new TextObject("{=molochsduels_menu_header}You make your preparations to meet your opponent in honorable combat."), false);
                     break;
                 case DuelFightResultEnum.PlayerWon:
                     bool flag = _duelOpponent.HeroObject.GetHeroTraits().Honor >= 0;
@@ -183,18 +185,18 @@ namespace MolochsDuels
                             if (flag)
                             {
                                 CharacterRelationManager.SetHeroRelation(Hero.MainHero, _duelOpponent.HeroObject.Clan.Leader, (int)((double)relationWithPlayer + 3.0));
-                                InformationManager.DisplayMessage(new InformationMessage(string.Format("Your relation with {0} has increased to {1}.", _duelOpponent.HeroObject.Clan.Name, (int)((double)relationWithPlayer + 3.0))));
+                                InformationManager.DisplayMessage(new InformationMessage(string.Format(new TextObject("{=molochsduels_relationship_increased}Your relation with {0} has increased to {1}.").ToString(), _duelOpponent.HeroObject.Clan.Name, (int)((double)relationWithPlayer + 3.0))));
                             }
                             else
                             {
                                 CharacterRelationManager.SetHeroRelation(Hero.MainHero, _duelOpponent.HeroObject.Clan.Leader, (int)((double)relationWithPlayer - 3.0));
-                                InformationManager.DisplayMessage(new InformationMessage(string.Format("Your relation with {0} has decreased to {1}.", _duelOpponent.HeroObject.Clan.Name, (int)((double)relationWithPlayer - 3.0))));
+                                InformationManager.DisplayMessage(new InformationMessage(string.Format(new TextObject("{=molochsduels_relationship_decreased}Your relation with {0} has decreased to {1}.").ToString(), _duelOpponent.HeroObject.Clan.Name, (int)((double)relationWithPlayer - 3.0))));
                             }
                             if (_friendlyDuelWager > 0)
                             {
                                 Hero.MainHero.ChangeHeroGold(_friendlyDuelWager);
                                 _duelOpponent.HeroObject.ChangeHeroGold(_friendlyDuelWager * -1);
-                                InformationManager.DisplayMessage(new InformationMessage(string.Format("You have received {0} denars.", _friendlyDuelWager.ToString())));
+                                InformationManager.DisplayMessage(new InformationMessage(string.Format(new TextObject("{=molochsduels_received_gold}You have received {0} denars.").ToString(), _friendlyDuelWager.ToString())));
                             }
                         }
                         else
@@ -204,13 +206,13 @@ namespace MolochsDuels
                         }
                     }
                     if (flag || !_surrenderDemand)
-                        MBTextManager.SetTextVariable("DUEL_MENU_TEXT", "You have won the duel!", false);
+                        MBTextManager.SetTextVariable("DUEL_MENU_TEXT", new TextObject("{=molochsduels_menu_duel_won}You have won the duel!"), false);
                     else if (!flag && _surrenderDemand)
-                        MBTextManager.SetTextVariable("DUEL_MENU_TEXT", "You have won the duel! However, the dishonorable lord refuses to surrender!", false);
+                        MBTextManager.SetTextVariable("DUEL_MENU_TEXT", new TextObject("{=molochsduels_menu_duel_won_enemy_refuses_surrender}You have won the duel! However, the dishonorable lord refuses to surrender!"), false);
                     _rewardsApplied = true;
                     break;
                 case DuelFightResultEnum.PlayerLost:
-                    MBTextManager.SetTextVariable("DUEL_MENU_TEXT", "You have lost the duel!", false);
+                    MBTextManager.SetTextVariable("DUEL_MENU_TEXT", new TextObject("{=molochsduels_menu_duel_lost}You have lost the duel!"), false);
                     if (!_rewardsApplied && !_isCompanionDuel)
                     {
                         if (_isFriendlyDuel)
@@ -220,7 +222,7 @@ namespace MolochsDuels
                             {
                                 Hero.MainHero.ChangeHeroGold(_friendlyDuelWager * -1);
                                 _duelOpponent.HeroObject.ChangeHeroGold(_friendlyDuelWager);
-                                InformationManager.DisplayMessage(new InformationMessage(string.Format("You have lost {0} denars.", _friendlyDuelWager.ToString())));
+                                InformationManager.DisplayMessage(new InformationMessage(string.Format(new TextObject("{=molochsduels_lost_gold}You have lost {0} denars.").ToString(), _friendlyDuelWager.ToString())));
                             }
                         }
                         else
@@ -328,7 +330,7 @@ namespace MolochsDuels
             if (!_spawnBothSidesWithHorses)
                 return num != 0;
             _spawnBothSidesWithHorses = false;
-            MBTextManager.SetTextVariable("DUEL_HORSEBACK_ON_OFF", "Duel on horseback: OFF", false);
+            MBTextManager.SetTextVariable("DUEL_HORSEBACK_ON_OFF", new TextObject("{=molochsduels_menu_duel_horseback_off}Duel on horseback: OFF"), false);
             return num != 0;
         }
 
@@ -423,7 +425,7 @@ namespace MolochsDuels
             float num = 10f / _playerStrengthRatio;
             CharacterObject.PlayerCharacter.HeroObject.Clan.AddRenown(num, true);
             CharacterObject.PlayerCharacter.HeroObject.AddInfluenceWithKingdom(num);
-            InformationManager.DisplayMessage(new InformationMessage(string.Format("You have gained {0} renown and influence.", num)));
+            InformationManager.DisplayMessage(new InformationMessage(string.Format(new TextObject("{=molochsduels_receive_renown_and_influence}You have gained {0} renown and influence.").ToString(), num)));
             PlayerEncounter.Battle.DoSurrender((BattleSideEnum)0);
             PlayerEncounter.Update();
         }
@@ -444,7 +446,7 @@ namespace MolochsDuels
             ResetDuelResult();
             float num = 6f;
             CharacterObject.PlayerCharacter.HeroObject.Clan.AddRenown(5f, true);
-            InformationManager.DisplayMessage(new InformationMessage(string.Format("You have gained {0} renown.", 5f)));
+            InformationManager.DisplayMessage(new InformationMessage(string.Format(new TextObject("{=molochsduels_receive_renown}You have gained {0} renown.").ToString(), 5f)));
             if (MobileParty.MainParty.BesiegedSettlement != null)
             {
                 MobileParty.MainParty.IgnoreForHours(num);
@@ -469,9 +471,9 @@ namespace MolochsDuels
         {
             _spawnBothSidesWithHorses = !_spawnBothSidesWithHorses;
             if (_spawnBothSidesWithHorses)
-                MBTextManager.SetTextVariable("DUEL_HORSEBACK_ON_OFF", "Duel on horseback: ON", false);
+                MBTextManager.SetTextVariable("DUEL_HORSEBACK_ON_OFF", new TextObject("{=molochsduels_menu_duel_horseback_on}Duel on horseback: ON"), false);
             else
-                MBTextManager.SetTextVariable("DUEL_HORSEBACK_ON_OFF", "Duel on horseback: OFF", false);
+                MBTextManager.SetTextVariable("DUEL_HORSEBACK_ON_OFF", new TextObject("{=molochsduels_menu_duel_horseback_off}Duel on horseback: OFF"), false);
             GameMenu.SwitchToMenu(MDMenu);
         }
 

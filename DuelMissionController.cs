@@ -11,6 +11,7 @@ using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.AgentOrigins;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
+using TaleWorlds.InputSystem;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using Extensions = TaleWorlds.Core.Extensions;
@@ -70,7 +71,7 @@ namespace MolochsDuels
         {
             if (!_duelHasEnded || (double)_duelEndTimer.ElapsedTime <= 4.0)
                 return;
-            GameTexts.SetVariable("leave_key", GameKeyTextExtensions.GetHotKeyGameText(Game.Current.GameTextManager, "CombatHotKeyCategory", 4));
+            GameTexts.SetVariable("leave_key", GameKeyTextExtensions.GetHotKeyGameTextFromKeyID(Game.Current.GameTextManager, HotKeyManager.GetAllCategories().FirstOrDefault(r => r.GameKeyCategoryId == "Generic").RegisteredGameKeys[4].KeyboardKey.ToString()).ToString());
             MBInformationManager.AddQuickInformation(GameTexts.FindText("str_duel_has_ended", null), 0, null, "");
             _duelEndTimer.Reset();
         }
@@ -78,7 +79,8 @@ namespace MolochsDuels
         public override InquiryData OnEndMissionRequest(out bool canLeave)
         {
             canLeave = true;
-            return _duelHasEnded ? null : new InquiryData("", GameTexts.FindText("str_give_up_fight", null).ToString(), true, true, GameTexts.FindText("str_ok", null).ToString(), GameTexts.FindText("str_cancel", null).ToString(), new Action(Mission.OnEndMissionResult), null, "");
+            return _duelHasEnded ? null : 
+                new InquiryData("", GameTexts.FindText("str_give_up_fight", null).ToString(), true, true, GameTexts.FindText("str_ok", null).ToString(), GameTexts.FindText("str_cancel", null).ToString(), new Action(Mission.OnEndMissionResult), null, "");
         }
 
         public override void OnAgentRemoved(
