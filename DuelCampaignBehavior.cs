@@ -1,25 +1,14 @@
-﻿// Decompiled with JetBrains decompiler
-// Type: MolochsDuels.DuelCampaignBehavior
-// Assembly: MolochsDuels, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-// MVID: 86B3BDB9-A3A7-4397-A47B-606A78A8EE24
-// Assembly location: C:\Users\andre\Downloads\MolochsDuels.dll
-
-using StoryMode.GauntletUI.Tutorial;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.CharacterDevelopment;
 using TaleWorlds.CampaignSystem.Encounters;
 using TaleWorlds.CampaignSystem.GameMenus;
 using TaleWorlds.CampaignSystem.Party;
 using TaleWorlds.CampaignSystem.Settlements;
-using TaleWorlds.CampaignSystem.Settlements.Locations;
 using TaleWorlds.Core;
-using TaleWorlds.Engine;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
-using TaleWorlds.MountAndBlade;
 
 namespace MolochsDuels
 {

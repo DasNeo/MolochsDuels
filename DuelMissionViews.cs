@@ -1,10 +1,4 @@
-﻿// Decompiled with JetBrains decompiler
-// Type: MolochsDuels.DuelMissionViews
-// Assembly: MolochsDuels, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-// MVID: 86B3BDB9-A3A7-4397-A47B-606A78A8EE24
-// Assembly location: C:\Users\andre\Downloads\MolochsDuels.dll
-
-using SandBox.View.Missions;
+﻿using SandBox.View.Missions;
 using System.Collections.Generic;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.MountAndBlade;

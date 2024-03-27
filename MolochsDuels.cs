@@ -1,15 +1,7 @@
-﻿// Decompiled with JetBrains decompiler
-// Type: MolochsDuels.MolochsDuels
-// Assembly: MolochsDuels, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-// MVID: 86B3BDB9-A3A7-4397-A47B-606A78A8EE24
-// Assembly location: C:\Users\andre\Downloads\MolochsDuels.dll
-
-using System.Linq;
-using TaleWorlds.CampaignSystem;
+﻿using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.GameMenus;
 using TaleWorlds.CampaignSystem.GameState;
 using TaleWorlds.Core;
-using TaleWorlds.InputSystem;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 
