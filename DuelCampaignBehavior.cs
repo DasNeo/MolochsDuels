@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.CharacterDevelopment;
 using TaleWorlds.CampaignSystem.Encounters;
@@ -396,6 +397,7 @@ namespace MolochsDuels
             }
             if (forbiddenScenes.Contains(scene))
                 scene = "battle_terrain_biome_065";
+            File.WriteAllText(Path.Combine(Path.GetTempPath(), "MolochsDuels-LastScene.txt"), scene);
 
             DuelMissions.OpenDuelMission(scene, _duelOpponent, _spawnBothSidesWithHorses, _isFriendlyDuel, isInsideSettlement);
         }
