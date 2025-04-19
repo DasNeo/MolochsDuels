@@ -63,9 +63,9 @@ namespace MolochsDuels
 
         public override void OnMissionTick(float dt)
         {
-            if (!_duelHasEnded || (double)_duelEndTimer.ElapsedTime <= 4.0)
+            if (!_duelHasEnded || _duelEndTimer.ElapsedTime <= 4.0)
                 return;
-            GameTexts.SetVariable("leave_key", GameKeyTextExtensions.GetHotKeyGameTextFromKeyID(Game.Current.GameTextManager, HotKeyManager.GetAllCategories().FirstOrDefault(r => r.GameKeyCategoryId == "Generic").RegisteredGameKeys[4].KeyboardKey.ToString()).ToString());
+            GameTexts.SetVariable("leave_key", HotKeyManager.GetHotKeyId("Generic", 4));
             MBInformationManager.AddQuickInformation(GameTexts.FindText("str_duel_has_ended", null), 0, null, "");
             _duelEndTimer.Reset();
         }
