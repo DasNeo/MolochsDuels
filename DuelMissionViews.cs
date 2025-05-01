@@ -1,4 +1,5 @@
-﻿using SandBox.View.Missions;
+using SandBox.View.Missions;
+using SandBox.View.Missions.Sound.Components;
 using System.Collections.Generic;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.MountAndBlade;
