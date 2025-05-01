@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.CharacterDevelopment;
@@ -163,29 +163,37 @@ namespace MolochsDuels
                 case DuelFightResultEnum.None:
                     MBTextManager.SetTextVariable("DUEL_MENU_TEXT", new TextObject("{=molochsduels_menu_header}You make your preparations to meet your opponent in honorable combat."), false);
                     break;
+
                 case DuelFightResultEnum.PlayerWon:
                     bool flag = _duelOpponent.HeroObject.GetHeroTraits().Honor >= 0;
+
                     if (!_rewardsApplied && !_isCompanionDuel)
                     {
                         if (_isFriendlyDuel)
                         {
                             PartyBase.MainParty.MobileParty.RecentEventsMorale += 2f;
-                            float relationWithPlayer = _duelOpponent.HeroObject.Clan.Leader.GetRelationWithPlayer();
+                            float relationWithPlayer = _duelOpponent.HeroObject.GetRelationWithPlayer();
+
                             if (flag)
                             {
-                                CharacterRelationManager.SetHeroRelation(Hero.MainHero, _duelOpponent.HeroObject.Clan.Leader, (int)((double)relationWithPlayer + 3.0));
-                                InformationManager.DisplayMessage(new InformationMessage(string.Format(new TextObject("{=molochsduels_relationship_increased}Your relation with {0} has increased to {1}.").ToString(), _duelOpponent.HeroObject.Clan.Name, (int)((double)relationWithPlayer + 3.0))));
+                                CharacterRelationManager.SetHeroRelation(Hero.MainHero, _duelOpponent.HeroObject, (int)((double)relationWithPlayer + 3.0));
+                                InformationManager.DisplayMessage(new InformationMessage(
+                                    $"Your relation with {_duelOpponent.HeroObject.Name} has increased by 3."));
                             }
                             else
                             {
-                                CharacterRelationManager.SetHeroRelation(Hero.MainHero, _duelOpponent.HeroObject.Clan.Leader, (int)((double)relationWithPlayer - 3.0));
-                                InformationManager.DisplayMessage(new InformationMessage(string.Format(new TextObject("{=molochsduels_relationship_decreased}Your relation with {0} has decreased to {1}.").ToString(), _duelOpponent.HeroObject.Clan.Name, (int)((double)relationWithPlayer - 3.0))));
+                                CharacterRelationManager.SetHeroRelation(Hero.MainHero, _duelOpponent.HeroObject, (int)((double)relationWithPlayer - 3.0));
+                                InformationManager.DisplayMessage(new InformationMessage(
+                                    $"Your relation with {_duelOpponent.HeroObject.Name} has decreased by 3."));
                             }
+
                             if (_friendlyDuelWager > 0)
                             {
                                 Hero.MainHero.ChangeHeroGold(_friendlyDuelWager);
                                 _duelOpponent.HeroObject.ChangeHeroGold(_friendlyDuelWager * -1);
-                                InformationManager.DisplayMessage(new InformationMessage(string.Format(new TextObject("{=molochsduels_received_gold}You have received {0} denars.").ToString(), _friendlyDuelWager.ToString())));
+
+                                InformationManager.DisplayMessage(new InformationMessage(
+                                    $"You have received {_friendlyDuelWager} denars."));
                             }
                         }
                         else
@@ -194,12 +202,15 @@ namespace MolochsDuels
                             PlayerEncounter.EncounteredMobileParty.RecentEventsMorale -= 5f;
                         }
                     }
+
                     if (flag || !_surrenderDemand)
                         MBTextManager.SetTextVariable("DUEL_MENU_TEXT", new TextObject("{=molochsduels_menu_duel_won}You have won the duel!"), false);
                     else if (!flag && _surrenderDemand)
                         MBTextManager.SetTextVariable("DUEL_MENU_TEXT", new TextObject("{=molochsduels_menu_duel_won_enemy_refuses_surrender}You have won the duel! However, the dishonorable lord refuses to surrender!"), false);
+
                     _rewardsApplied = true;
                     break;
+
                 case DuelFightResultEnum.PlayerLost:
                     MBTextManager.SetTextVariable("DUEL_MENU_TEXT", new TextObject("{=molochsduels_menu_duel_lost}You have lost the duel!"), false);
                     if (!_rewardsApplied && !_isCompanionDuel)
@@ -211,7 +222,8 @@ namespace MolochsDuels
                             {
                                 Hero.MainHero.ChangeHeroGold(_friendlyDuelWager * -1);
                                 _duelOpponent.HeroObject.ChangeHeroGold(_friendlyDuelWager);
-                                InformationManager.DisplayMessage(new InformationMessage(string.Format(new TextObject("{=molochsduels_lost_gold}You have lost {0} denars.").ToString(), _friendlyDuelWager.ToString())));
+                                InformationManager.DisplayMessage(new InformationMessage(
+                                    $"You have lost {_friendlyDuelWager} denars."));
                             }
                         }
                         else
@@ -223,8 +235,10 @@ namespace MolochsDuels
                     _rewardsApplied = true;
                     break;
             }
+
             if (_duelFightResult == DuelFightResultEnum.None || !_isFriendlyDuel)
                 return;
+
             _duelsFought.Add(new KeyValuePair<CharacterObject, CampaignTime>(_duelOpponent, CampaignTime.Now));
         }
 
@@ -510,7 +524,7 @@ namespace MolochsDuels
                 num1 += 30f / _playerStrengthRatio;
                 if (_duelOpponent.HeroObject.IsFactionLeader)
                     num1 += 20f;
-                else if (_duelOpponent.HeroObject.Clan.Leader == _duelOpponent.HeroObject)
+                else if (_duelOpponent.HeroObject == _duelOpponent.HeroObject)
                     num1 += 10f;
             }
             float skillValue = mainHero.GetSkillValue(DefaultSkills.Charm);

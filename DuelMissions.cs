@@ -1,4 +1,4 @@
-﻿using SandBox.Missions.MissionLogics;
+using SandBox.Missions.MissionLogics;
 using SandBox.View.Missions;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.Party;
